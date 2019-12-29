@@ -9,7 +9,8 @@ const path = require('path'),
 const config = {
     entry: {
             app: path.resolve(__dirname, 'src', 'js', 'app.js'),
-            ur: path.resolve(__dirname, 'src', 'js', 'ur', 'index.jsx')
+            ur: path.resolve(__dirname, 'src', 'js', 'ur', 'index.jsx'),
+            hooks: path.resolve(__dirname, 'src', 'js', 'hooks', 'index.js')
         },
     output: {
         path: path.resolve(__dirname, 'public'),
@@ -47,6 +48,11 @@ const config = {
             filename: 'ur-test.html',
             chunks: ['ur']
         }),
+        new HtmlWebpackPlugin({
+            template: path.resolve(__dirname, 'src', 'hooks.html'),
+            filename: 'hooks.html',
+            chunks: ['hooks']
+        }),
         new ExtractTextPlugin('main.css'),
         new CopyWebpackPlugin([{
             from: path.resolve(__dirname, 'src', 'images'),
@@ -54,6 +60,8 @@ const config = {
         }])
     ]
 };
+
+config.mode = 'development';
 
 if (WEBPACK_MODE === 'build') {
     config.plugins = [...config.plugins, new UglifyJsPlugin()]
